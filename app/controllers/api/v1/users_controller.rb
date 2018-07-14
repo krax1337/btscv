@@ -5,11 +5,12 @@ class Api::V1::UsersController < ApplicationController
 	end
 
 	def show
-		@user = User.find(params[:id])
-	end
-
-	def new
-		@user = User.new
+		@user = User.find_by_email(params[:email])
+		if @user && @user.authenticate(params[:password])
+			render json: @user
+		else
+			render json: {"Error": "Invalid username or password"}
+		end
 	end
 
 	def create
