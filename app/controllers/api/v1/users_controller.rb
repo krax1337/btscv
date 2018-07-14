@@ -13,14 +13,11 @@ class Api::V1::UsersController < ApplicationController
 	end
 
 	def create
-		email = params[:email]
-		password = params[:password]
-		render izat
-		user = User.new(email: email, password: password)
+		@user = User.new(email: params[:email], password: params[:password])
 		if @user.save
-			render json: user
+			render json: @user
 		else
-			render izat
+			render json: { errors: @user.errors.full_messages }, status: :errors	
 		end
 	end
 
